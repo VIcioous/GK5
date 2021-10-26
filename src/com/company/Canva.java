@@ -32,7 +32,8 @@ public class Canva extends JPanel {
 
 
     private void binarize3() {
-
+        BufferedImage newImage = binarizationService.getEntropySelectionImage(imageJPG);
+        NewWindow binarization = new NewWindow(newImage);
     }
 
     private void binarize2(BufferedImage image) {
@@ -88,9 +89,9 @@ public class Canva extends JPanel {
 
         extendHistogramButton.setText("extend");
         equalizeHistogramButton.setText("equalize");
-        binary1Button.setText("binarize1");
-        binary2Button.setText("binarize2");
-        binary3Button.setText("binarize3");
+        binary1Button.setText("Select");
+        binary2Button.setText("PBS");
+        binary3Button.setText("Entropy");
 
         this.setLayout(null);
 

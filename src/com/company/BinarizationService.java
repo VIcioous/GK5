@@ -46,7 +46,7 @@ public class BinarizationService {
         int b = (rgb) & 0xff;
 
 
-        int gray = (int)(0.2126 * r + 0.7152 * g + 0.0722 * b);
+        int gray = (int)(0.299 * r + 0.587 * g + 0.114 * b);
 
 
         return gray;
@@ -70,5 +70,33 @@ public class BinarizationService {
                 step++;
         }
         return getManualyThresholdedImage(image,step);
+    }
+
+    public BufferedImage getEntropySelectionImage(BufferedImage image)
+    {
+        int[] bits = new int[256];
+        float size = (float) image.getHeight() *image.getWidth();
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                int bit = getGrayScale(image.getRGB(x, y));
+                bits[bit]++;
+            }
+        }
+        float[] percentage = new float[256];
+
+        for(int i =0 ;i<256;i++)
+        {
+            percentage[i] = ((float)bits[i]/size)*100;
+
+        }
+        float entropy =0 ;
+
+        for (int f =1 ;f< percentage.length; f++){
+            float log = (float) Math.log(percentage[f]);
+            if(percentage[f]==0) log =0;
+            entropy+=percentage[f]*log;
+        }
+
+        return getManualyThresholdedImage(image,(int)entropy*-1);
     }
 }
